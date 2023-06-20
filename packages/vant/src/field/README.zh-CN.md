@@ -268,9 +268,27 @@ export default {
 <van-cell-group inset>
   <van-field
     v-model="value"
-    label="手机号"
-    placeholder="请输入手机号"
+    label="文本"
+    placeholder="顶部对齐"
     label-align="top"
+  />
+  <van-field
+    v-model="value2"
+    label="文本"
+    placeholder="左对齐"
+    label-align="left"
+  />
+  <van-field
+    v-model="value3"
+    label="文本"
+    placeholder="居中对齐"
+    label-align="center"
+  />
+  <van-field
+    v-model="value4"
+    label="文本"
+    placeholder="右对齐"
+    label-align="right"
   />
 </van-cell-group>
 ```
@@ -405,8 +423,8 @@ fieldRef.value?.focus();
 | --van-field-input-error-text-color    | _var(--van-danger-color)_ | -    |
 | --van-field-input-disabled-text-color | _var(--van-text-color-3)_ | -    |
 | --van-field-placeholder-text-color    | _var(--van-text-color-3)_ | -    |
-| --van-field-icon-size                 | _16px_                    | -    |
-| --van-field-clear-icon-size           | _16px_                    | -    |
+| --van-field-icon-size                 | _18px_                    | -    |
+| --van-field-clear-icon-size           | _18px_                    | -    |
 | --van-field-clear-icon-color          | _var(--van-gray-5)_       | -    |
 | --van-field-right-icon-color          | _var(--van-gray-6)_       | -    |
 | --van-field-error-message-color       | _var(--van-danger-color)_ | -    |

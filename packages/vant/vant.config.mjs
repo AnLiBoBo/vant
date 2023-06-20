@@ -211,6 +211,10 @@ location.href = location.href.replace('youzan.github.io', 'vant-ui.github.io');
                 title: 'Slider 滑块',
               },
               {
+                path: 'signature',
+                title: 'Signature 签名',
+              },
+              {
                 path: 'stepper',
                 title: 'Stepper 步进器',
               },
@@ -236,12 +240,20 @@ location.href = location.href.replace('youzan.github.io', 'vant-ui.github.io');
                 title: 'ActionSheet 动作面板',
               },
               {
+                path: 'barrage',
+                title: 'Barrage 弹幕',
+              },
+              {
                 path: 'dialog',
                 title: 'Dialog 弹出框',
               },
               {
                 path: 'dropdown-menu',
                 title: 'DropdownMenu 下拉菜单',
+              },
+              {
+                path: 'floating-panel',
+                title: 'FloatingPanel 浮动面板',
               },
               {
                 path: 'loading',
@@ -321,6 +333,10 @@ location.href = location.href.replace('youzan.github.io', 'vant-ui.github.io');
                 title: 'Progress 进度条',
               },
               {
+                path: 'rolling-text',
+                title: 'RollingText 翻滚文本',
+              },
+              {
                 path: 'skeleton',
                 title: 'Skeleton 骨架屏',
               },
@@ -343,6 +359,10 @@ location.href = location.href.replace('youzan.github.io', 'vant-ui.github.io');
               {
                 path: 'text-ellipsis',
                 title: 'TextEllipsis 文本省略',
+              },
+              {
+                path: 'watermark',
+                title: 'Watermark 水印',
               },
             ],
           },
@@ -651,6 +671,10 @@ location.href = location.href.replace('youzan.github.io', 'vant-ui.github.io');
                 title: 'Slider',
               },
               {
+                path: 'signature',
+                title: 'Signature',
+              },
+              {
                 path: 'stepper',
                 title: 'Stepper',
               },
@@ -676,12 +700,20 @@ location.href = location.href.replace('youzan.github.io', 'vant-ui.github.io');
                 title: 'ActionSheet',
               },
               {
+                path: 'barrage',
+                title: 'Barrage',
+              },
+              {
                 path: 'dialog',
                 title: 'Dialog',
               },
               {
                 path: 'dropdown-menu',
                 title: 'DropdownMenu',
+              },
+              {
+                path: 'floating-panel',
+                title: 'FloatingPanel',
               },
               {
                 path: 'loading',
@@ -761,6 +793,10 @@ location.href = location.href.replace('youzan.github.io', 'vant-ui.github.io');
                 title: 'Progress',
               },
               {
+                path: 'rolling-text',
+                title: 'RollingText',
+              },
+              {
                 path: 'skeleton',
                 title: 'Skeleton',
               },
@@ -783,6 +819,10 @@ location.href = location.href.replace('youzan.github.io', 'vant-ui.github.io');
               {
                 path: 'text-ellipsis',
                 title: 'TextEllipsis',
+              },
+              {
+                path: 'watermark',
+                title: 'Watermark',
               },
             ],
           },

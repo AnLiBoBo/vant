@@ -189,13 +189,18 @@ test('should change title style when using title-style prop', async () => {
           <Tab title="title1" titleStyle="color: red;">
             Text
           </Tab>
+          <Tab title="title1" titleStyle={{ color: 'blue' }}>
+            Text
+          </Tab>
         </Tabs>
       );
     },
   });
 
   await later();
-  expect(wrapper.find('.van-tab').style.color).toEqual('red');
+  const tabs = wrapper.findAll('.van-tab');
+  expect(tabs.at(0)!.style.color).toEqual('red');
+  expect(tabs.at(1)!.style.color).toEqual('blue');
 });
 
 test('should allot to hide bottom border by border prop', async () => {
@@ -457,4 +462,35 @@ test('should call before-change prop before changing', async () => {
   await tabs[4].trigger('click');
   expect(onChange).toHaveBeenCalledTimes(2);
   expect(onChange).toHaveBeenLastCalledWith(4, 'title5');
+});
+
+test('should re-render when line-width or line-height changed', async () => {
+  const wrapper = mount({
+    data() {
+      return {
+        lineWidth: 20,
+        lineHeight: 5,
+      };
+    },
+    render() {
+      return (
+        <Tabs lineWidth={this.lineWidth} lineHeight={this.lineHeight}>
+          <Tab>1</Tab>
+        </Tabs>
+      );
+    },
+  });
+
+  await later();
+  const line = wrapper.find('.van-tabs__line');
+  expect(line.style.width).toEqual('20px');
+  expect(line.style.height).toEqual('5px');
+
+  await wrapper.setData({
+    lineWidth: 30,
+    lineHeight: 10,
+  });
+  await later();
+  expect(line.style.width).toEqual('30px');
+  expect(line.style.height).toEqual('10px');
 });

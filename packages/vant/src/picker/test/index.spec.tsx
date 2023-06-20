@@ -46,6 +46,33 @@ test('should emit cancel event after clicking the cancel button', () => {
   ]);
 });
 
+test('should work correctly when dragging the column and changing columns prop', async () => {
+  const columnsOne = [
+    { text: '1990', value: '1990' },
+    { text: '1991', value: '1991' },
+  ];
+  const columnsTwo = [{ text: '1993', value: '1993' }];
+  const wrapper = mount(Picker, {
+    props: {
+      columns: columnsOne,
+    },
+  });
+
+  triggerDrag(wrapper.findAll('.van-picker-column')[0], 0, -100);
+  await wrapper.setProps({
+    columns: columnsTwo,
+  });
+  await wrapper.find('.van-picker__confirm').trigger('click');
+
+  expect(wrapper.emitted<[string, number]>('confirm')![0]).toEqual([
+    {
+      selectedOptions: [{ text: '1993', value: '1993' }],
+      selectedValues: ['1993'],
+      selectedIndexes: [0],
+    },
+  ]);
+});
+
 test('should emit change event after draging the column', async () => {
   const wrapper = mount(Picker, {
     props: {
@@ -139,6 +166,38 @@ test('should emit click-option event after clicking an option', async () => {
       selectedOptions: [{ text: '1990', value: '1990' }],
       selectedValues: ['1990'],
       selectedIndexes: [0],
+    },
+  ]);
+});
+
+test('should emit scroll-into event after draging the column', async () => {
+  const wrapper = mount(Picker, {
+    props: {
+      columns: simpleColumn,
+    },
+  });
+
+  triggerDrag(wrapper.find('.van-picker-column'), 0, -100);
+  await wrapper.find('.van-picker-column ul').trigger('transitionend');
+
+  expect(wrapper.emitted('scrollInto')).toEqual([
+    [{ columnIndex: 0, currentOption: { text: '1992', value: '1992' } }],
+  ]);
+});
+
+test('should emit scroll-into event after clicking an option', async () => {
+  const wrapper = mount(Picker, {
+    props: {
+      showToolbar: true,
+      columns: simpleColumn,
+    },
+  });
+
+  await wrapper.find('.van-picker-column__item').trigger('click');
+  expect(wrapper.emitted('scrollInto')![0]).toEqual([
+    {
+      columnIndex: 0,
+      currentOption: { text: '1990', value: '1990' },
     },
   ]);
 });

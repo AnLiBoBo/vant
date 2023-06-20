@@ -357,14 +357,15 @@ export default {
 | --- | --- | --- |
 | confirm | Emitted when the confirm button is clicked | _{ selectedValues, selectedOptions, selectedIndexes }_ |
 | cancel | Emitted when the cancel button is clicked | _{ selectedValues, selectedOptions, selectedIndexes }_ |
-| change | Emitted when current option is changed | _{ selectedValues, selectedOptions,selectedIndexes, columnIndex }_ |
+| change | Emitted when current selected option is changed | _{ selectedValues, selectedOptions,selectedIndexes, columnIndex }_ |
 | click-option | Emitted when an option is clicked | _{ currentOption, selectedValues, selectedOptions, selectedIndexes, columnIndex }_ |
+| scroll-into `v4.2.1` | Emitted when an option is scrolled into the middle selection area by clicking or dragging | _{ currentOption, columnIndex }_ |
 
 ### Slots
 
 | Name | Description | SlotProps |
 | --- | --- | --- |
-| toolbar `3.1.2` | Custom toolbar content | - |
+| toolbar | Custom toolbar content | - |
 | title | Custom title | - |
 | confirm | Custom confirm button text | - |
 | cancel | Custom cancel button text | - |
@@ -384,7 +385,7 @@ export default {
 
 ### Methods
 
-Use [ref](https://v3.vuejs.org/guide/component-template-refs.html) to get Picker instance and call instance methods.
+Use [ref](https://vuejs.org/guide/essentials/template-refs.html) to get Picker instance and call instance methods.
 
 | Name | Description | Attribute | Return value |
 | --- | --- | --- | --- |

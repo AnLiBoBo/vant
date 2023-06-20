@@ -19,6 +19,158 @@ Vant follows [Semantic Versioning 2.0.0](https://semver.org/lang/zh-CN/).
 
 ## Details
 
+### [v4.5.0](https://github.com/vant-ui/vant/compare/v4.4.1...v4.5.0)
+
+`2023-06-11`
+
+**New Component**
+
+- add new FloatingPanel component, contributed by [@zhousg](https://github.com/zhousg) ❤️ [#11832](https://github.com/vant-ui/vant/issues/11832)
+
+**Feature**
+
+- AddressList: add new right-icon props [#11959](https://github.com/vant-ui/vant/issues/11959)
+- DropdownMenu: add close method [#11921](https://github.com/vant-ui/vant/issues/11921)
+- Slider: add dragging param for button slot [#11946](https://github.com/vant-ui/vant/issues/11946)
+- TimePicker: add min-time and max-time prop [#11887](https://github.com/vant-ui/vant/issues/11887)
+- TimePicker: add values param for filter method [#11916](https://github.com/vant-ui/vant/issues/11916)
+- CI: add issue helper [#11963](https://github.com/vant-ui/vant/issues/11963)
+
+**Bug Fixes**
+
+- BackTop: should hide when deactivated [#11938](https://github.com/vant-ui/vant/issues/11938)
+
+### [v4.4.1](https://github.com/vant-ui/vant/compare/v4.4.0...v4.4.1)
+
+`2023-05-28`
+
+**Feature**
+
+- Popover: add actions-direction prop [#11888](https://github.com/vant-ui/vant/issues/11888)
+
+**Bug Fixes**
+
+- ImagePreview: stop animation during initialization [#11897](https://github.com/vant-ui/vant/issues/11897)
+- Popup: opened event is emitted twice when duration is 0 [#11902](https://github.com/vant-ui/vant/issues/11902)
+- Slider: should update startValue when the slider is clicked [#11904](https://github.com/vant-ui/vant/issues/11904)
+- Tab: maximum recursive updates exceeded in Tabs [#11898](https://github.com/vant-ui/vant/issues/11898)
+
+### [v4.4.0](https://github.com/vant-ui/vant/compare/v4.3.2...v4.4.0)
+
+`2023-05-21`
+
+**New Component**
+
+- add new Barrage component, contributed by [@zhousg](https://github.com/zhousg) ❤️ [#11760](https://github.com/vant-ui/vant/issues/11760)
+
+**Feature**
+
+- Cascader: scroll the selected option into view when switching tabs [#11869](https://github.com/vant-ui/vant/issues/11869)
+- Divider: add vertical prop [#11883](https://github.com/vant-ui/vant/issues/11883)
+- Document: sync mobile position on anchor click [#11879](https://github.com/vant-ui/vant/issues/11879)
+- ImagePreview: optimize the preview effect of long images [#11857](https://github.com/vant-ui/vant/issues/11857)
+- Signature: improve signature clarity by devicePixelRatio [#11835](https://github.com/vant-ui/vant/issues/11835)
+- Uploader: add reupload prop [#11854](https://github.com/vant-ui/vant/issues/11854)
+
+**Bug Fixes**
+
+- AddressEdit: should hide border of the last cell [#11872](https://github.com/vant-ui/vant/issues/11872)
+- Area: areaProps omit allow-html show-toolbar [#11871](https://github.com/vant-ui/vant/issues/11871)
+- BackTop: use the closest parent scroll element as target [#11858](https://github.com/vant-ui/vant/issues/11858)
+- ContactList: increase right icon size and optimize styles [#11873](https://github.com/vant-ui/vant/issues/11873)
+- DatePicker: should display correctly when modelValue is updated from external [#11839](https://github.com/vant-ui/vant/issues/11839)
+- Dialog: fix the rounded corners of shadow when button is clicked [#11863](https://github.com/vant-ui/vant/issues/11863)
+
+### [v4.3.2](https://github.com/vant-ui/vant/compare/v4.3.1...v4.3.2)
+
+`2023-05-14`
+
+**Feature**
+
+- ImagePreview: use the touched point as the center of zooming [#11848](https://github.com/vant-ui/vant/issues/11848)
+- PickerGroup: the tab of PickerGroup supports controlled mode [#11771](https://github.com/vant-ui/vant/issues/11771)
+- Checkbox: disabled unchecked options when the limit is exceeded [#11814](https://github.com/vant-ui/vant/issues/11814)
+
+**Bug Fixes**
+
+- Filed: onclick label execute twice [#11838](https://github.com/vant-ui/vant/issues/11838)
+- Steps: fix the style that occurs when there is only one step [#11822](https://github.com/vant-ui/vant/issues/11822)
+- SubmitBar: Unused CSS variables [#11845](https://github.com/vant-ui/vant/issues/11845)
+- Tab: should cancel raf before the next scroll [#11819](https://github.com/vant-ui/vant/issues/11819)
+
+### [v4.3.1](https://github.com/vant-ui/vant/compare/v4.3.0...v4.3.1)
+
+`2023-05-04`
+
+**Bug Fixes**
+
+- Fix failed to install Vant v4.3.0 [#11815](https://github.com/vant-ui/vant/issues/11815)
+
+### [v4.3.0](https://github.com/vant-ui/vant/compare/v4.2.1...v4.3.0)
+
+`2023-05-03`
+
+**New Component**
+
+- add new Signature component, contributed by [@LIjiAngChen8](https://github.com/LIjiAngChen8) ❤️ [#11733](https://github.com/vant-ui/vant/issues/11733)
+
+**Feature**
+
+- Field: increase default icon size to 18px [#11799](https://github.com/vant-ui/vant/issues/11799)
+
+**Bug Fixes**
+
+- Field: disabled cursor should be not-allowed [#11800](https://github.com/vant-ui/vant/issues/11800)
+- Image: failed to display loading when using lazy-load [#11809](https://github.com/vant-ui/vant/issues/11809)
+
+### [v4.2.1](https://github.com/vant-ui/vant/compare/v4.2.0...v4.2.1)
+
+`2023-04-30`
+
+**Feature**
+
+- Pagination: add show-prev-button, show-next-button props [#11780](https://github.com/vant-ui/vant/issues/11780)
+- Picker: add scroll-into event [#11757](https://github.com/vant-ui/vant/issues/11757)
+
+**Bug Fixes**
+
+- Pagination: don't show click feedback when button is disabled [#11779](https://github.com/vant-ui/vant/issues/11779)
+- Sticky: resize or orientationchange wrapper no reset width and height [#11753](https://github.com/vant-ui/vant/issues/11753)
+- Tabs: re-render when line-width or line-height changed [#11776](https://github.com/vant-ui/vant/issues/11776)
+- Tabs: should scroll active tab into view after resized [#11777](https://github.com/vant-ui/vant/issues/11777)
+- Watermark: add xlink namespace and fix blob MIME type [#11762](https://github.com/vant-ui/vant/issues/11762)
+
+### [v4.2.0](https://github.com/vant-ui/vant/compare/v4.1.2...v4.2.0)
+
+`2023-04-16`
+
+**New Component**
+
+- add new Watermark component, contributed by [@HuberTRoy](https://github.com/HuberTRoy) ❤️ [#11721](https://github.com/vant-ui/vant/issues/11721)
+
+**Feature**
+
+- ShareSheet: allow custom icon [#11709](https://github.com/vant-ui/vant/issues/11709)
+- TextEllipsis: add dots prop [#11745](https://github.com/vant-ui/vant/issues/11745)
+
+**Bug Fixes**
+
+- Swipe: should resize after props.width and props.height changed [#11747](https://github.com/vant-ui/vant/issues/11747)
+
+### [v4.1.2](https://github.com/vant-ui/vant/compare/v4.1.1...v4.1.2)
+
+`2023-03-26`
+
+**Feature**
+
+- Locale: add Khmer translations [#11701](https://github.com/vant-ui/vant/issues/11701)
+
+**Bug Fixes**
+
+- Field: label-align top works well with label-width [#11684](https://github.com/vant-ui/vant/issues/11684)
+- Field: should emit blur event when readonly [#11699](https://github.com/vant-ui/vant/issues/11699)
+- ImagePreview: long vertical images sliding up and down [#11702](https://github.com/vant-ui/vant/issues/11702)
+
 ### [v4.1.1](https://github.com/vant-ui/vant/compare/v4.1.0...v4.1.1)
 
 `2023-03-19`
@@ -40,7 +192,7 @@ Vant follows [Semantic Versioning 2.0.0](https://semver.org/lang/zh-CN/).
 
 **New Component**
 
-- add new TextEllipsis component [#11593](https://github.com/vant-ui/vant/issues/11593)
+- add new TextEllipsis component, contributed by [@wjw-gavin](https://github.com/wjw-gavin) ❤️ [#11593](https://github.com/vant-ui/vant/issues/11593)
 
 **Feature**
 
@@ -385,7 +537,7 @@ Vant follows [Semantic Versioning 2.0.0](https://semver.org/lang/zh-CN/).
 
 **New Component**
 
-- Add new component [Space](#/en-US/space), contributed by [@LadyChatterleyLover](https://github.com/LadyChatterleyLover) [#10857](https://github.com/vant-ui/vant/issues/10857)
+- Add new component [Space](#/en-US/space), contributed by [@LadyChatterleyLover](https://github.com/LadyChatterleyLover) [#10857](https://github.com/vant-ui/vant/issues/10857) ❤️
 
 **Feature**
 

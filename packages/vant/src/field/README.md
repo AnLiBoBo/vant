@@ -243,15 +243,33 @@ Use `input-align` prop to align the input value.
 
 ### Label Align
 
-Use `label-align` prop to align the input value.
+Use `label-align` prop to align the input value, can be set to `center`, `right` or `top`.
 
 ```html
 <van-cell-group inset>
   <van-field
     v-model="value"
-    label="Tel"
-    placeholder="Please input tel number"
+    label="Label"
+    placeholder="Align Top"
     label-align="top"
+  />
+  <van-field
+    v-model="value2"
+    label="Label"
+    placeholder="Align Left"
+    label-align="left"
+  />
+  <van-field
+    v-model="value3"
+    label="Label"
+    placeholder="Align Center"
+    label-align="center"
+  />
+  <van-field
+    v-model="value4"
+    label="Label"
+    placeholder="Align Right"
+    label-align="right"
   />
 </van-cell-group>
 ```
@@ -318,7 +336,7 @@ Use `label-align` prop to align the input value.
 
 ### Methods
 
-Use [ref](https://v3.vuejs.org/guide/component-template-refs.html) to get Field instance and call instance methods.
+Use [ref](https://vuejs.org/guide/essentials/template-refs.html) to get Field instance and call instance methods.
 
 | Name  | Description         | Attribute | Return value |
 | ----- | ------------------- | --------- | ------------ |
@@ -386,8 +404,8 @@ The component provides the following CSS variables, which can be used to customi
 | --van-field-input-error-text-color | _var(--van-danger-color)_ | - |
 | --van-field-input-disabled-text-color | _var(--van-text-color-3)_ | - |
 | --van-field-placeholder-text-color | _var(--van-text-color-3)_ | - |
-| --van-field-icon-size | _16px_ | - |
-| --van-field-clear-icon-size | _16px_ | - |
+| --van-field-icon-size | _18px_ | - |
+| --van-field-clear-icon-size | _18px_ | - |
 | --van-field-clear-icon-color | _var(--van-gray-5)_ | - |
 | --van-field-right-icon-color | _var(--van-gray-6)_ | - |
 | --van-field-error-message-color | _var(--van-danger-color)_ | - |
