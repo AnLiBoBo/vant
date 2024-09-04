@@ -1,5 +1,6 @@
+import 'vitest-canvas-mock';
 import { Signature } from '..';
-import { mount } from '../../../test';
+import { mount, trigger } from '../../../test';
 
 test('renders a canvas element when canvas is supported', async () => {
   const wrapper = mount(Signature);
@@ -26,7 +27,7 @@ test('should emit "signing" event when touch is moving', async () => {
 
   expect(wrapper.emitted('signing')).toBeTruthy();
   expect(
-    wrapper.emitted<TouchEvent[]>('signing')![0][0].touches[0]
+    wrapper.emitted<TouchEvent[]>('signing')![0][0].touches[0],
   ).toMatchObject({
     clientX: 10,
     clientY: 20,
@@ -52,7 +53,7 @@ test('submit() should output a valid canvas', async () => {
   const emitted = wrapper.emitted();
   expect(emitted.submit).toBeTruthy();
   const [data] = emitted.submit[0] as [
-    { canvas: HTMLCanvasElement | null; image: string }
+    { canvas: HTMLCanvasElement | null; image: string },
   ];
 
   expect(data.canvas).toBeNull();
@@ -62,7 +63,7 @@ test('submit() should output a valid canvas', async () => {
 test('should render tips correctly', async () => {
   const createElement = document.createElement.bind(document);
 
-  const spy = jest.spyOn(document, 'createElement');
+  const spy = vi.spyOn(document, 'createElement');
   spy.mockImplementation((tagName, options) => {
     if (tagName === 'canvas') {
       return {} as HTMLCanvasElement;
@@ -89,4 +90,21 @@ test('should allow to custom button text', async () => {
   });
 
   expect(wrapper.find('.van-signature__footer').html()).toMatchSnapshot();
+});
+
+test('expose resize method', async () => {
+  const wrapper = mount(Signature);
+  expect(wrapper.vm.resize).toBeTypeOf('function');
+  expect(wrapper.vm.resize()).toBeUndefined();
+});
+
+test('should call resize when window width changes', async () => {
+  const wrapper = mount(Signature);
+  const canvas = wrapper.find('canvas');
+  const ctx = canvas.element.getContext('2d')!;
+  const spy = vi.spyOn(ctx, 'getImageData');
+
+  Object.defineProperty(window, 'innerWidth', { value: 400 });
+  await trigger(window, 'resize');
+  expect(spy).toBeCalled();
 });

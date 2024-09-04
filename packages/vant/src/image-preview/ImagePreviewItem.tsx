@@ -5,6 +5,7 @@ import {
   reactive,
   defineComponent,
   type CSSProperties,
+  type ExtractPropTypes,
 } from 'vue';
 
 // Utils
@@ -15,11 +16,11 @@ import {
   createNamespace,
   makeRequiredProp,
   LONG_PRESS_START_TIME,
-  TAP_OFFSET,
   type ComponentInstance,
 } from '../utils';
 
 // Composables
+import { useExpose } from '../composables/use-expose';
 import { useTouch } from '../composables/use-touch';
 import { raf, useEventListener, useRect } from '@vant/use';
 
@@ -31,7 +32,7 @@ import { SwipeItem } from '../swipe-item';
 const getDistance = (touches: TouchList) =>
   Math.sqrt(
     (touches[0].clientX - touches[1].clientX) ** 2 +
-      (touches[0].clientY - touches[1].clientY) ** 2
+      (touches[0].clientY - touches[1].clientY) ** 2,
   );
 
 const getCenter = (touches: TouchList) => ({
@@ -43,17 +44,27 @@ const bem = createNamespace('image-preview')[1];
 
 const longImageRatio = 2.6;
 
+const imagePreviewItemProps = {
+  src: String,
+  show: Boolean,
+  active: Number,
+  minZoom: makeRequiredProp(numericProp),
+  maxZoom: makeRequiredProp(numericProp),
+  rootWidth: makeRequiredProp(Number),
+  rootHeight: makeRequiredProp(Number),
+  disableZoom: Boolean,
+  doubleScale: Boolean,
+  closeOnClickImage: Boolean,
+  closeOnClickOverlay: Boolean,
+  vertical: Boolean,
+};
+
+export type ImagePreviewItemProps = ExtractPropTypes<
+  typeof imagePreviewItemProps
+>;
+
 export default defineComponent({
-  props: {
-    src: String,
-    show: Boolean,
-    active: Number,
-    minZoom: makeRequiredProp(numericProp),
-    maxZoom: makeRequiredProp(numericProp),
-    rootWidth: makeRequiredProp(Number),
-    rootHeight: makeRequiredProp(Number),
-    disableZoom: Boolean,
-  },
+  props: imagePreviewItemProps,
 
   emits: ['scale', 'close', 'longPress'],
 
@@ -159,7 +170,7 @@ export default defineComponent({
         scale,
         scale === 2 || isLongImage.value
           ? { x: touch.startX.value, y: touch.startY.value }
-          : undefined
+          : undefined,
       );
     };
 
@@ -215,9 +226,10 @@ export default defineComponent({
         // if the image is moved to the edge, no longer trigger move,
         // allow user to swipe to next image
         if (
-          (moveX > maxMoveX.value || moveX < -maxMoveX.value) &&
-          !isImageMoved &&
-          touch.isHorizontal()
+          (props.vertical
+            ? touch.isVertical() && Math.abs(moveY) > maxMoveY.value
+            : touch.isHorizontal() && Math.abs(moveX) > maxMoveX.value) &&
+          !isImageMoved
         ) {
           state.moving = false;
           return;
@@ -241,29 +253,48 @@ export default defineComponent({
       }
     };
 
-    const checkTap = () => {
+    const checkClose = (event: TouchEvent) => {
+      const swipeItemEl: HTMLElement = swipeItem.value?.$el;
+
+      if (!swipeItemEl) return;
+
+      const imageEl = swipeItemEl.firstElementChild;
+      const isClickOverlay = event.target === swipeItemEl;
+      const isClickImage = imageEl?.contains(event.target as HTMLElement);
+
+      if (!props.closeOnClickImage && isClickImage) return;
+      if (!props.closeOnClickOverlay && isClickOverlay) return;
+
+      emit('close');
+    };
+
+    const checkTap = (event: TouchEvent) => {
       if (fingerNum > 1) {
         return;
       }
 
-      const { offsetX, offsetY } = touch;
       const deltaTime = Date.now() - touchStartTime;
 
       // Same as the default value of iOS double tap timeout
       const TAP_TIME = 250;
 
-      if (offsetX.value < TAP_OFFSET && offsetY.value < TAP_OFFSET) {
-        // tap or double tap
+      if (touch.isTap.value) {
         if (deltaTime < TAP_TIME) {
-          if (doubleTapTimer) {
-            clearTimeout(doubleTapTimer);
-            doubleTapTimer = null;
-            toggleScale();
-          } else {
-            doubleTapTimer = setTimeout(() => {
-              emit('close');
+          // allow double to scale
+          if (props.doubleScale) {
+            // tap or double tap
+            if (doubleTapTimer) {
+              clearTimeout(doubleTapTimer);
               doubleTapTimer = null;
-            }, TAP_TIME);
+              toggleScale();
+            } else {
+              doubleTapTimer = setTimeout(() => {
+                checkClose(event);
+                doubleTapTimer = null;
+              }, TAP_TIME);
+            }
+          } else {
+            checkClose(event);
           }
         }
         // long press
@@ -314,7 +345,7 @@ export default defineComponent({
       // eliminate tap delay on safari
       preventDefault(event, stopPropagation);
 
-      checkTap();
+      checkTap(event);
       touch.reset();
     };
 
@@ -353,7 +384,7 @@ export default defineComponent({
         if (!value) {
           resetScale();
         }
-      }
+      },
     );
     watch(() => [props.rootWidth, props.rootHeight], resize);
 
@@ -361,6 +392,8 @@ export default defineComponent({
     useEventListener('touchmove', onTouchMove, {
       target: computed(() => swipeItem.value?.$el),
     });
+
+    useExpose({ resetScale });
 
     return () => {
       const imageSlots = {
@@ -377,7 +410,11 @@ export default defineComponent({
         >
           {slots.image ? (
             <div class={bem('image-wrap')}>
-              {slots.image({ src: props.src })}
+              {slots.image({
+                src: props.src,
+                onLoad,
+                style: imageStyle.value,
+              })}
             </div>
           ) : (
             <Image

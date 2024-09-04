@@ -5,6 +5,7 @@ import {
   watch,
   type ExtractPropTypes,
   type PropType,
+  type ComponentPublicInstance,
 } from 'vue';
 
 // Utils
@@ -16,15 +17,18 @@ import {
   type TimeFilter,
 } from '../date-picker/utils';
 import {
-  createNamespace,
+  pick,
   extend,
   isSameValue,
   makeNumericProp,
-  pick,
+  createNamespace,
 } from '../utils';
 
+// Composables
+import { useExpose } from '../composables/use-expose';
+
 // Components
-import { Picker } from '../picker';
+import { Picker, PickerInstance } from '../picker';
 
 const [name] = createNamespace('time-picker');
 
@@ -58,6 +62,16 @@ export const timePickerProps = extend({}, sharedProps, {
 
 export type TimePickerProps = ExtractPropTypes<typeof timePickerProps>;
 
+export type TimePickerExpose = {
+  confirm: () => void;
+  getSelectedTime: () => string[];
+};
+
+export type TimePickerInstance = ComponentPublicInstance<
+  TimePickerProps,
+  TimePickerExpose
+>;
+
 export default defineComponent({
   name,
 
@@ -67,13 +81,18 @@ export default defineComponent({
 
   setup(props, { emit, slots }) {
     const currentValues = ref<string[]>(props.modelValue);
+    const pickerRef = ref<PickerInstance>();
 
     const getValidTime = (time: string) => {
       const timeLimitArr = time.split(':');
       return fullColumns.map((col, i) =>
-        props.columnsType.includes(col) ? timeLimitArr[i] : '00'
+        props.columnsType.includes(col) ? timeLimitArr[i] : '00',
       );
     };
+
+    const confirm = () => pickerRef.value?.confirm();
+
+    const getSelectedTime = () => currentValues.value;
 
     const columns = computed(() => {
       let { minHour, maxHour, minMinute, maxMinute, minSecond, maxSecond } =
@@ -113,7 +132,7 @@ export default defineComponent({
               type,
               formatter,
               filter,
-              currentValues.value
+              currentValues.value,
             );
           case 'minute':
             return genOptions(
@@ -122,7 +141,7 @@ export default defineComponent({
               type,
               formatter,
               filter,
-              currentValues.value
+              currentValues.value,
             );
           case 'second':
             return genOptions(
@@ -131,12 +150,12 @@ export default defineComponent({
               type,
               formatter,
               filter,
-              currentValues.value
+              currentValues.value,
             );
           default:
             if (process.env.NODE_ENV !== 'production') {
               throw new Error(
-                `[Vant] DatePicker: unsupported columns type: ${type}`
+                `[Vant] DatePicker: unsupported columns type: ${type}`,
               );
             }
             return [];
@@ -158,15 +177,18 @@ export default defineComponent({
           currentValues.value = newValues;
         }
       },
-      { immediate: true }
+      { immediate: true },
     );
 
     const onChange = (...args: unknown[]) => emit('change', ...args);
     const onCancel = (...args: unknown[]) => emit('cancel', ...args);
     const onConfirm = (...args: unknown[]) => emit('confirm', ...args);
 
+    useExpose<TimePickerExpose>({ confirm, getSelectedTime });
+
     return () => (
       <Picker
+        ref={pickerRef}
         v-model={currentValues.value}
         v-slots={slots}
         columns={columns.value}

@@ -29,6 +29,9 @@ yarn add @vant/cli -D
 
 # 通过 pnpm
 pnpm add @vant/cli -D
+
+# 通过 Bun
+bun add @vant/cli -D
 ```
 
 安装完成后，请将以下配置添加到 package.json 文件中
@@ -40,7 +43,7 @@ pnpm add @vant/cli -D
     "test": "vant-cli test",
     "lint": "vant-cli lint",
     "build": "vant-cli build",
-    "prepare": "husky install",
+    "prepare": "husky",
     "release": "vant-cli release",
     "build-site": "vant-cli build-site"
   },

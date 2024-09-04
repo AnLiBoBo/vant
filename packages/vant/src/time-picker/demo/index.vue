@@ -31,7 +31,7 @@ const t = useTranslate({
 const baseTime = ref(['12', '00']);
 const secondTime = ref(['12', '00', '00']);
 const rangeTime = ref(['12', '35']);
-const filterTime = ref(['12', ' 00']);
+const filterTime = ref(['12', '00']);
 const formatterTime = ref(['12', '00']);
 const hourMinuteTime = ref(['12', '00', '00']);
 
@@ -47,13 +47,13 @@ const filter = (type: string, options: PickerOption[]) => {
 const timeFilter = (
   type: string,
   options: PickerOption[],
-  values: string[]
+  values: string[],
 ) => {
   const hour = +values[0];
 
   if (type === 'hour') {
     return options.filter(
-      (option) => Number(option.value) >= 8 && Number(option.value) <= 18
+      (option) => Number(option.value) >= 8 && Number(option.value) <= 18,
     );
   }
 

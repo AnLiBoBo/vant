@@ -39,7 +39,7 @@ const isStart3 = ref(false);
 const isStart4 = ref(false);
 
 const isStartNoNumberType = ref(false);
-const textArray = ref([
+const textList = ref([
   'aaaaa',
   'bbbbb',
   'ccccc',
@@ -61,13 +61,7 @@ const reset = () => {
 <template>
   <demo-block :title="t('basicUsage')">
     <div style="">
-      <VanRollingText
-        :start-num="0"
-        :target-num="123"
-        :duration="2"
-        :auto-start="isStart"
-        direction="down"
-      />
+      <VanRollingText :start-num="0" :target-num="123" :auto-start="isStart" />
       <div style="margin-top: 10px">
         <Button @click="() => (isStart = true)" type="primary">{{
           t('rollDown')
@@ -81,7 +75,6 @@ const reset = () => {
       <VanRollingText
         :start-num="0"
         :target-num="432"
-        :duration="2"
         :auto-start="isStart2"
         direction="up"
       />
@@ -98,10 +91,8 @@ const reset = () => {
       <VanRollingText
         :start-num="0"
         :target-num="54321"
-        :duration="2"
         :auto-start="isStart3"
         stop-order="rtl"
-        direction="up"
       />
       <div style="margin-top: 10px">
         <Button @click="() => (isStart3 = true)" type="primary">{{
@@ -114,11 +105,9 @@ const reset = () => {
   <demo-block :title="t('noNumberType')">
     <div>
       <VanRollingText
-        :text-array="textArray"
+        :text-list="textList"
         :duration="1"
         :auto-start="isStartNoNumberType"
-        stop-order="rtl"
-        direction="up"
       />
       <div style="margin-top: 10px">
         <Button @click="() => (isStartNoNumberType = true)" type="primary">{{
@@ -134,11 +123,8 @@ const reset = () => {
         class="my-rolling-text"
         :start-num="12345"
         :target-num="54321"
-        :duration="2"
         :auto-start="isStart4"
-        stop-order="rtl"
-        direction="up"
-        :height="70"
+        :height="54"
       />
     </div>
   </demo-block>
@@ -150,13 +136,10 @@ const reset = () => {
         ref="rollingTextRef"
         :start-num="0"
         :target-num="54321"
-        :duration="2"
         :auto-start="false"
-        stop-order="rtl"
-        direction="up"
-        :height="70"
+        :height="54"
       />
-      <van-grid clickable :column-num="3" style="margin-top: 10px">
+      <van-grid clickable :column-num="2" style="margin-top: 10px">
         <van-grid-item icon="play-circle-o" :text="t('start')" @click="start" />
         <van-grid-item icon="replay" :text="t('reset')" @click="reset" />
       </van-grid>
@@ -165,24 +148,22 @@ const reset = () => {
 </template>
 
 <style lang="less">
-.van-button {
-  margin-left: var(--van-padding-md);
-}
+.demo-rolling-text {
+  .van-button {
+    margin-left: var(--van-padding-md);
+  }
 
-.van-rolling-text {
-  margin-left: var(--van-padding-md);
-}
+  .van-rolling-text {
+    margin-left: var(--van-padding-md);
+  }
 
-.van-grid {
-  margin-left: var(--van-padding-md);
-}
-
-.my-rolling-text {
-  --van-rolling-text-background: deepskyblue;
-  --van-rolling-text-color: white;
-  --van-rolling-text-font-size: 40px;
-  --van-rolling-text-gap: 6px;
-  --van-rolling-text-item-border-radius: 5px;
-  --van-rolling-text-item-width: 50px;
+  .my-rolling-text {
+    --van-rolling-text-background: #1989fa;
+    --van-rolling-text-color: white;
+    --van-rolling-text-font-size: 24px;
+    --van-rolling-text-gap: 6px;
+    --van-rolling-text-item-border-radius: 5px;
+    --van-rolling-text-item-width: 40px;
+  }
 }
 </style>

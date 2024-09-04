@@ -283,7 +283,7 @@ export default {
         deletable: true,
         beforeDelete: () => {
           showToast(
-            'Customize the events and styles of a single preview image'
+            'Customize the events and styles of a single preview image',
           );
         },
       },
@@ -393,6 +393,7 @@ Use [ref](https://vuejs.org/guide/essentials/template-refs.html) to get Uploader
 | --- | --- | --- | --- |
 | closeImagePreview | Close full screen image preview | - | - |
 | chooseFile | Trigger choosing files, works with the user action context only because of browser security | - | - |
+| reuploadFile `4.9.3` | Trigger choosing files, choosing a new file will overwrite the previously uploaded file, works with the user action context only because of browser security | _index: number_ | - |
 
 ### Types
 
@@ -404,6 +405,8 @@ import type {
   UploaderInstance,
   UploaderResultType,
   UploaderFileListItem,
+  UploaderBeforeRead,
+  UploaderAfterRead,
 } from 'vant';
 ```
 
@@ -451,3 +454,25 @@ The component provides the following CSS variables, which can be used to customi
 | --van-uploader-loading-icon-size | _22px_ | - |
 | --van-uploader-loading-icon-color | _var(--van-white)_ | - |
 | --van-uploader-disabled-opacity | _var(--van-disabled-opacity)_ | - |
+| --van-uploader-border-radius | _0px_ | - |
+
+## FAQ
+
+### How do I know if the user has granted camera permission?
+
+When uploading an image, if the user has not granted camera permission to the current app, the Uploader component will not work.
+
+You can determine if camera permission has been granted by using the [getUserMedia](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) method provided by the browser (please note that the `getUserMedia` method cannot be used in iOS 10).
+
+Here is a simplified example:
+
+```ts
+navigator.mediaDevices
+  .getUserMedia({ video: true })
+  .then((stream) => {
+    console.log(stream);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+```

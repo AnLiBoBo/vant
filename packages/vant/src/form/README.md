@@ -347,7 +347,7 @@ export default {
     const columns = [
       { text: 'Delaware', value: 'Delaware' },
       { text: 'Florida', value: 'Florida' },
-      { text: 'Georqia', value: 'Georqia' },
+      { text: 'Georgia', value: 'Georgia' },
       { text: 'Indiana', value: 'Indiana' },
       { text: 'Maine', value: 'Maine' },
     ];
@@ -499,8 +499,10 @@ export default {
 | colon | Whether to display colon after label | _boolean_ | `false` |
 | disabled | Whether to disable form | _boolean_ | `false` |
 | readonly | Whether to be readonly | _boolean_ | `false` |
+| required `v4.7.3` | Whether to show required mark | _boolean \| 'auto'_ | `null` |
 | validate-first | Whether to stop the validation when a rule fails | _boolean_ | `false` |
 | scroll-to-error | Whether to scroll to the error field when validation failed | _boolean_ | `false` |
+| scroll-to-error-position `v4.9.2` | The position when scrolling to the wrong form item, can be set to `center` \| `end` \| `nearest` \| `start` | _string_ | - |
 | show-error | Whether to highlight input when validation failed | _boolean_ | `false` |
 | show-error-message | Whether to show error message when validation failed | _boolean_ | `true` |
 | submit-on-enter | Whether to submit form on enter | _boolean_ | `true` |

@@ -56,6 +56,7 @@ export default defineComponent({
     let opened: boolean;
     let lockClick: boolean;
     let startOffset: number;
+    let isInBeforeClosing: boolean;
 
     const root = ref<HTMLElement>();
     const leftRef = ref<HTMLElement>();
@@ -72,11 +73,11 @@ export default defineComponent({
       ref.value ? useRect(ref).width : 0;
 
     const leftWidth = computed(() =>
-      isDef(props.leftWidth) ? +props.leftWidth : getWidthByRef(leftRef)
+      isDef(props.leftWidth) ? +props.leftWidth : getWidthByRef(leftRef),
     );
 
     const rightWidth = computed(() =>
-      isDef(props.rightWidth) ? +props.rightWidth : getWidthByRef(rightRef)
+      isDef(props.rightWidth) ? +props.rightWidth : getWidthByRef(rightRef),
     );
 
     const open = (side: SwipeCellSide) => {
@@ -143,7 +144,7 @@ export default defineComponent({
         state.offset = clamp(
           deltaX.value + startOffset,
           -rightWidth.value,
-          leftWidth.value
+          leftWidth.value,
         );
       }
     };
@@ -160,18 +161,30 @@ export default defineComponent({
       }
     };
 
-    const onClick = (position: SwipeCellPosition = 'outside') => {
+    const onClick = (
+      position: SwipeCellPosition = 'outside',
+      event: MouseEvent | TouchEvent,
+    ) => {
+      if (isInBeforeClosing) return;
+
       emit('click', position);
 
       if (opened && !lockClick) {
+        isInBeforeClosing = true;
         callInterceptor(props.beforeClose, {
           args: [
             {
+              event,
               name: props.name,
               position,
             },
           ],
-          done: () => close(position),
+          done: () => {
+            isInBeforeClosing = false;
+            close(position);
+          },
+          canceled: () => (isInBeforeClosing = false),
+          error: () => (isInBeforeClosing = false),
         });
       }
     };
@@ -181,12 +194,17 @@ export default defineComponent({
         if (stop) {
           event.stopPropagation();
         }
-        onClick(position);
+
+        if (lockClick) {
+          return;
+        }
+
+        onClick(position, event);
       };
 
     const renderSideContent = (
       side: SwipeCellSide,
-      ref: Ref<HTMLElement | undefined>
+      ref: Ref<HTMLElement | undefined>,
     ) => {
       const contentSlot = slots[side];
       if (contentSlot) {
@@ -207,7 +225,9 @@ export default defineComponent({
       close,
     });
 
-    useClickAway(root, () => onClick('outside'), { eventName: 'touchstart' });
+    useClickAway(root, (event) => onClick('outside', event as TouchEvent), {
+      eventName: 'touchstart',
+    });
 
     // useEventListener will set passive to `false` to eliminate the warning of Chrome
     useEventListener('touchmove', onTouchMove, {

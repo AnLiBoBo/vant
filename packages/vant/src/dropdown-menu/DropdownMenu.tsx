@@ -42,8 +42,10 @@ export const dropdownMenuProps = {
   duration: makeNumericProp(0.2),
   direction: makeStringProp<DropdownMenuDirection>('down'),
   activeColor: String,
+  autoLocate: Boolean,
   closeOnClickOutside: truthProp,
   closeOnClickOverlay: truthProp,
+  swipeThreshold: numericProp,
 };
 
 export type DropdownMenuProps = ExtractPropTypes<typeof dropdownMenuProps>;
@@ -65,7 +67,11 @@ export default defineComponent({
     const scrollParent = useScrollParent(root);
 
     const opened = computed(() =>
-      children.some((item) => item.state.showWrapper)
+      children.some((item) => item.state.showWrapper),
+    );
+
+    const scrollable = computed(
+      () => props.swipeThreshold && children.length > +props.swipeThreshold,
     );
 
     const barStyle = computed<CSSProperties | undefined>(() => {
@@ -124,7 +130,10 @@ export default defineComponent({
           id={`${id}-${index}`}
           role="button"
           tabindex={disabled ? undefined : 0}
-          class={[bem('item', { disabled }), { [HAPTICS_FEEDBACK]: !disabled }]}
+          class={[
+            bem('item', { disabled, grow: scrollable.value }),
+            { [HAPTICS_FEEDBACK]: !disabled },
+          ]}
           onClick={() => {
             if (!disabled) {
               toggleItem(index);
@@ -160,7 +169,10 @@ export default defineComponent({
         <div
           ref={barRef}
           style={barStyle.value}
-          class={bem('bar', { opened: opened.value })}
+          class={bem('bar', {
+            opened: opened.value,
+            scrollable: scrollable.value,
+          })}
         >
           {children.map(renderTitle)}
         </div>

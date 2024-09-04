@@ -5,29 +5,30 @@ import {
   truthProp,
   numericProp,
   unknownProp,
-  makeStringProp,
   makeRequiredProp,
   type Numeric,
 } from '../utils';
 import { Icon } from '../icon';
+
+import type { RadioShape } from '../radio';
 
 export type CheckerShape = 'square' | 'round';
 export type CheckerDirection = 'horizontal' | 'vertical';
 export type CheckerLabelPosition = 'left' | 'right';
 export type CheckerParent = {
   props: {
+    max?: Numeric;
+    shape?: CheckerShape | RadioShape;
     disabled?: boolean;
     iconSize?: Numeric;
     direction?: CheckerDirection;
-    checkedColor?: string;
     modelValue?: unknown | unknown[];
-    max?: Numeric;
+    checkedColor?: string;
   };
 };
 
 export const checkerProps = {
   name: unknownProp,
-  shape: makeStringProp<CheckerShape>('round'),
   disabled: Boolean,
   iconSize: numericProp,
   modelValue: unknownProp,
@@ -40,9 +41,14 @@ export default defineComponent({
   props: extend({}, checkerProps, {
     bem: makeRequiredProp(Function),
     role: String,
+    shape: String as PropType<CheckerShape | RadioShape>,
     parent: Object as PropType<CheckerParent | null>,
     checked: Boolean,
     bindGroup: truthProp,
+    indeterminate: {
+      type: Boolean as PropType<boolean | null>,
+      default: null,
+    },
   }),
 
   emits: ['click', 'toggle'],
@@ -88,6 +94,10 @@ export default defineComponent({
       }
     });
 
+    const shape = computed(() => {
+      return props.shape || getParentProp('shape') || 'round';
+    });
+
     const onClick = (event: MouseEvent) => {
       const { target } = event;
       const icon = iconRef.value;
@@ -100,25 +110,46 @@ export default defineComponent({
     };
 
     const renderIcon = () => {
-      const { bem, shape, checked } = props;
+      const { bem, checked, indeterminate } = props;
       const iconSize = props.iconSize || getParentProp('iconSize');
 
       return (
         <div
           ref={iconRef}
-          class={bem('icon', [shape, { disabled: disabled.value, checked }])}
-          style={{ fontSize: addUnit(iconSize) }}
+          class={bem('icon', [
+            shape.value,
+            { disabled: disabled.value, checked, indeterminate },
+          ])}
+          style={
+            shape.value !== 'dot'
+              ? { fontSize: addUnit(iconSize) }
+              : {
+                  width: addUnit(iconSize),
+                  height: addUnit(iconSize),
+                  borderColor: iconStyle.value?.borderColor,
+                }
+          }
         >
           {slots.icon ? (
             slots.icon({ checked, disabled: disabled.value })
+          ) : shape.value !== 'dot' ? (
+            <Icon
+              name={indeterminate ? 'minus' : 'success'}
+              style={iconStyle.value}
+            />
           ) : (
-            <Icon name="success" style={iconStyle.value} />
+            <div
+              class={bem('icon--dot__icon')}
+              style={{ backgroundColor: iconStyle.value?.backgroundColor }}
+            ></div>
           )}
         </div>
       );
     };
 
     const renderLabel = () => {
+      const { checked } = props;
+
       if (slots.default) {
         return (
           <span
@@ -127,7 +158,7 @@ export default defineComponent({
               { disabled: disabled.value },
             ])}
           >
-            {slots.default()}
+            {slots.default({ checked, disabled: disabled.value })}
           </span>
         );
       }

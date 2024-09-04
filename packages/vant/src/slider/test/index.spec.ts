@@ -17,9 +17,9 @@ function mockRect(vertical?: boolean) {
 }
 
 function testSlotReceivedParams(
-  slot: ReturnType<typeof jest.fn>,
+  slot: ReturnType<typeof vi.fn>,
   dragging: boolean,
-  dragIndex?: number
+  dragIndex?: number,
 ) {
   const latestParams = slot.mock.calls.at(-1)![0];
   expect(latestParams.dragging).toEqual(dragging);
@@ -236,7 +236,7 @@ test('should format v-model with step correctly', async () => {
 });
 
 test('should render button slot correctly', async () => {
-  const buttonSlot = jest.fn();
+  const buttonSlot = vi.fn();
   const wrapper = mount(Slider, {
     props: {
       modelValue: 30,
@@ -261,8 +261,8 @@ test('should render button slot correctly', async () => {
 });
 
 test('should render left-button、right-button slot correctly', async () => {
-  const leftButtonSlot = jest.fn();
-  const rightButtonSlot = jest.fn();
+  const leftButtonSlot = vi.fn();
+  const rightButtonSlot = vi.fn();
   const wrapper = mount(Slider, {
     props: {
       range: true,
@@ -289,7 +289,7 @@ test('should render left-button、right-button slot correctly', async () => {
   expect(wrapper.html()).toMatchSnapshot();
 
   const [leftButton, rightButton] = wrapper.findAll(
-    '.van-slider__button-wrapper'
+    '.van-slider__button-wrapper',
   );
 
   trigger(leftButton, 'touchstart', 50, 0);

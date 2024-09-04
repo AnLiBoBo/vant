@@ -87,10 +87,16 @@ export const fieldSharedProps = {
   inputAlign: String as PropType<FieldTextAlign>,
   placeholder: String,
   autocomplete: String,
+  autocapitalize: String,
+  autocorrect: String,
   errorMessage: String,
   enterkeyhint: String,
   clearTrigger: makeStringProp<FieldClearTrigger>('focus'),
   formatTrigger: makeStringProp<FieldFormatTrigger>('onChange'),
+  spellcheck: {
+    type: Boolean,
+    default: null,
+  },
   error: {
     type: Boolean,
     default: null,
@@ -187,6 +193,14 @@ export default defineComponent({
       return props.modelValue;
     });
 
+    const showRequiredMark = computed(() => {
+      const required = getProp('required');
+      if (required === 'auto') {
+        return props.rules?.some((rule: FieldRule) => rule.required);
+      }
+      return required;
+    });
+
     const runRules = (rules: FieldRule[]) =>
       rules.reduce(
         (promise, rule) =>
@@ -223,7 +237,7 @@ export default defineComponent({
               });
             }
           }),
-        Promise.resolve()
+        Promise.resolve(),
       );
 
     const resetValidation = () => {
@@ -302,7 +316,7 @@ export default defineComponent({
 
     const updateValue = (
       value: string,
-      trigger: FieldFormatTrigger = 'onChange'
+      trigger: FieldFormatTrigger = 'onChange',
     ) => {
       const originalValue = value;
       value = limitValueLength(value);
@@ -355,7 +369,7 @@ export default defineComponent({
 
             inputRef.value.setSelectionRange(
               Math.min(selectionStart, valueLen),
-              Math.min(selectionEnd, valueLen)
+              Math.min(selectionEnd, valueLen),
             );
           }
         } else {
@@ -491,7 +505,10 @@ export default defineComponent({
         autofocus: props.autofocus,
         placeholder: props.placeholder,
         autocomplete: props.autocomplete,
+        autocapitalize: props.autocapitalize,
+        autocorrect: props.autocorrect,
         enterkeyhint: props.enterkeyhint,
+        spellcheck: props.spellcheck,
         'aria-labelledby': props.label ? `${id}-label` : undefined,
         onBlur,
         onFocus,
@@ -640,7 +657,7 @@ export default defineComponent({
         resetValidation();
         validateWithTrigger('onChange');
         nextTick(adjustTextareaSize);
-      }
+      },
     );
 
     onMounted(() => {
@@ -687,7 +704,7 @@ export default defineComponent({
           titleStyle={labelStyle.value}
           valueClass={bem('value')}
           titleClass={[
-            bem('label', [labelAlign, { required: props.required }]),
+            bem('label', [labelAlign, { required: showRequiredMark.value }]),
             props.labelClass,
           ]}
           arrowDirection={props.arrowDirection}

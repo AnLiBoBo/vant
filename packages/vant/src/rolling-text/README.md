@@ -2,7 +2,7 @@
 
 ### Introduction
 
-Rolling text animation, which can roll numbers and other types of text.
+Rolling text animation, which can roll numbers and other types of text. Please upgrade `vant` to >= v4.6.0 before using this component.
 
 ### Install
 
@@ -20,28 +20,18 @@ app.use(RollingText);
 
 ### Basic Usage
 
+You can set the starting value with `start-num` and the target value with `target-num`. The RollingText component will automatically start the animation, rolling from the starting value to the target value.
+
 ```html
-<van-rolling-text
-  :start-num="0"
-  :target-num="123"
-  :duration="2"
-  :auto-start="false"
-  direction="down"
-/>
+<van-rolling-text :start-num="0" :target-num="123" />
 ```
 
 ### Set Rolling Direction
 
-You can set the rolling direction of the number by using the `direction` property. `up` represents rolling up.
+You can set the rolling direction of the numbers using the `direction` prop. By default, it rolls downwards, but you can set it to `up` to roll upwards.
 
 ```html
-<van-rolling-text
-  :start-num="0"
-  :target-num="432"
-  :duration="2"
-  :auto-start="false"
-  direction="up"
-/>
+<van-rolling-text :start-num="0" :target-num="432" direction="up" />
 ```
 
 ### Set Stop Order
@@ -49,28 +39,15 @@ You can set the rolling direction of the number by using the `direction` propert
 You can set the order of stopping the animation of each digit through the `stop-order` prop. By default, it stops from the higher digits. Setting `rtl` can stop from the ones digit.
 
 ```html
-<van-rolling-text
-  :start-num="0"
-  :target-num="54321"
-  :duration="2"
-  :auto-start="false"
-  stop-order="rtl"
-  direction="up"
-/>
+<van-rolling-text :start-num="0" :target-num="54321" stop-order="rtl" />
 ```
 
 ### Roll Non-numeric Text
 
-You can set non-numeric content flip using the `text-array` props.
+You can reverse non-numeric content by using the `text-list` prop. The component will rolling from the first item to the last item in the array. Please make sure that the array length is greater than or equal to 2, and that each item has the same length.
 
 ```html
-<van-rolling-text
-  :text-array="textArray"
-  :duration="1"
-  :auto-start="false"
-  stop-order="rtl"
-  direction="up"
-/>
+<van-rolling-text :text-list="textList" :duration="1" />
 ```
 
 ```js
@@ -78,7 +55,7 @@ import { ref } from 'vue';
 
 export default {
   setup() {
-    const textArray = ref([
+    const textList = ref([
       'aaaaa',
       'bbbbb',
       'ccccc',
@@ -87,49 +64,45 @@ export default {
       'fffff',
       'ggggg',
     ]);
-    return { textArray };
+    return { textList };
   },
 };
 ```
 
 ### Custom Style
 
+The RollingText component provides some CSS variables that you can override to customize the style, or you can directly modify the component's style. Additionally, you can set the height of the numbers using the `height` prop.
+
 ```html
 <van-rolling-text
   class="my-rolling-text"
+  :height="54"
   :start-num="12345"
   :target-num="54321"
-  :duration="2"
-  stop-order="rtl"
-  direction="up"
-  :height="70"
 />
 ```
 
 ```css
 .my-rolling-text {
-  --van-rolling-text-background: deepskyblue;
+  --van-rolling-text-background: #1989fa;
   --van-rolling-text-color: white;
-  --van-rolling-text-font-size: 40px;
+  --van-rolling-text-font-size: 24px;
   --van-rolling-text-gap: 6px;
   --van-rolling-text-item-border-radius: 5px;
-  --van-rolling-text-item-width: 50px;
+  --van-rolling-text-item-width: 40px;
 }
 ```
 
 ### Manual Control
 
-After getting the component instance through `ref`, you can call the `start` and `reset` methods.
+After obtaining the component instance through `ref`, you can call the `start` and `reset` methods. The `start` method is used to start the animation, and the `reset` method is used to reset the animation.
 
 ```html
 <van-rolling-text
   ref="rollingTextRef"
   :start-num="0"
   :target-num="54321"
-  :duration="2"
   :auto-start="false"
-  stop-order="rtl"
-  direction="up"
 />
 <van-grid clickable :column-num="3">
   <van-grid-item icon="play-circle-o" :text="start" @click="start" />
@@ -162,7 +135,7 @@ export default {
 | --- | --- | --- | --- |
 | start-num | Start number | _number_ | `0` |
 | target-num | Target number | _number_ | - |
-| text-array | Text array | _Array_ | `[]` |
+| text-list | Text array | _string[]_ | `[]` |
 | duration | Duration of the animation, in seconds | _number_ | `2` |
 | direction | Rolling direction of the text, with `down` and `up` as the values | _string_ | `down` |
 | auto-start | Whether to start the animation | _boolean_ | `true` |

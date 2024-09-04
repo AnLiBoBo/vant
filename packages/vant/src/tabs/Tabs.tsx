@@ -74,6 +74,7 @@ export const tabsProps = {
   offsetTop: makeNumericProp(0),
   background: String,
   lazyRender: truthProp,
+  showHeader: truthProp,
   lineWidth: numericProp,
   lineHeight: numericProp,
   beforeChange: Function as PropType<Interceptor>,
@@ -122,7 +123,7 @@ export default defineComponent({
       () =>
         children.length > +props.swipeThreshold ||
         !props.ellipsis ||
-        props.shrink
+        props.shrink,
     );
 
     const navStyle = computed(() => ({
@@ -166,7 +167,7 @@ export default defineComponent({
       cancelScrollLeftToRaf = scrollLeftTo(
         nav,
         to,
-        immediate ? 0 : +props.duration
+        immediate ? 0 : +props.duration,
       );
     };
 
@@ -224,7 +225,7 @@ export default defineComponent({
 
     const setCurrentIndex = (
       currentIndex: number,
-      skipScrollIntoView?: boolean
+      skipScrollIntoView?: boolean,
     ) => {
       const newIndex = findAvailableTab(currentIndex);
 
@@ -256,7 +257,7 @@ export default defineComponent({
       // scroll to correct position
       if (stickyFixed && !props.scrollspy) {
         setRootScrollTop(
-          Math.ceil(getElementTop(root.value!) - offsetTopPx.value)
+          Math.ceil(getElementTop(root.value!) - offsetTopPx.value),
         );
       }
     };
@@ -264,10 +265,10 @@ export default defineComponent({
     // correct the index of active tab
     const setCurrentIndexByName = (
       name: Numeric,
-      skipScrollIntoView?: boolean
+      skipScrollIntoView?: boolean,
     ) => {
       const matched = children.find(
-        (tab, index) => getTabName(tab, index) === name
+        (tab, index) => getTabName(tab, index) === name,
       );
 
       const index = matched ? children.indexOf(matched) : 0;
@@ -290,7 +291,7 @@ export default defineComponent({
             immediate ? 0 : +props.duration,
             () => {
               lockScroll = false;
-            }
+            },
           );
         }
       }
@@ -300,7 +301,7 @@ export default defineComponent({
     const onClickTab = (
       item: ComponentInstance,
       index: number,
-      event: MouseEvent
+      event: MouseEvent,
     ) => {
       const { title, disabled } = children[index];
       const name = getTabName(children[index], index);
@@ -412,7 +413,7 @@ export default defineComponent({
 
     watch(
       () => [props.color, props.duration, props.lineWidth, props.lineHeight],
-      setLine
+      setLine,
     );
     watch(windowWidth, resize);
 
@@ -422,7 +423,7 @@ export default defineComponent({
         if (value !== currentName.value) {
           setCurrentIndexByName(value);
         }
-      }
+      },
     );
 
     watch(
@@ -435,7 +436,7 @@ export default defineComponent({
             scrollIntoView(true);
           });
         }
-      }
+      },
     );
 
     const init = () => {
@@ -479,17 +480,19 @@ export default defineComponent({
 
     return () => (
       <div ref={root} class={bem([props.type])}>
-        {props.sticky ? (
-          <Sticky
-            container={root.value}
-            offsetTop={offsetTopPx.value}
-            onScroll={onStickyScroll}
-          >
-            {renderHeader()}
-          </Sticky>
-        ) : (
-          renderHeader()
-        )}
+        {props.showHeader ? (
+          props.sticky ? (
+            <Sticky
+              container={root.value}
+              offsetTop={offsetTopPx.value}
+              onScroll={onStickyScroll}
+            >
+              {renderHeader()}
+            </Sticky>
+          ) : (
+            renderHeader()
+          )
+        ) : null}
         <TabsContent
           ref={contentRef}
           count={children.length}

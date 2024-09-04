@@ -63,6 +63,9 @@ yarn add @vant/area-data
 
 # with pnpm
 pnpm add @vant/area-data
+
+# with Bun
+bun add @vant/area-data
 ```
 
 ```ts
@@ -110,7 +113,7 @@ export default {
 <van-area
   title="Title"
   :area-list="areaList"
-  :columns-placeholder="['Choose', 'Choose', 'Choose']"
+  :columns-placeholder="['Province', 'City', 'County']"
 />
 ```
 

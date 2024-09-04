@@ -86,6 +86,7 @@ export default {
     const loading = ref(false);
     const onLoad = () => {
       fetchSomeThing().catch(() => {
+        loading.value = false;
         error.value = true;
       });
     };
@@ -177,6 +178,7 @@ export default {
 | immediate-check | Whether to check loading position immediately after mounted | _boolean_ | `true` |
 | disabled | Whether to disable the load event | _boolean_ | `false` |
 | direction | Scroll direction, can be set to `up` | _string_ | `down` |
+| scroller `v4.6.4` | Specifies the node that needs to listen for scroll events, defaults to the nearest parent scroll node | _Element_ | - |
 
 ### Events
 

@@ -65,6 +65,9 @@ yarn add @vant/area-data
 
 # 通过 pnpm
 pnpm add @vant/area-data
+
+# 通过 Bun
+bun add @vant/area-data
 ```
 
 ```ts
@@ -114,7 +117,7 @@ export default {
 <van-area
   title="标题"
   :area-list="areaList"
-  :columns-placeholder="['请选择', '请选择', '请选择']"
+  :columns-placeholder="['省份', '城市', '区县']"
 />
 ```
 
@@ -139,7 +142,7 @@ export default {
 
 ### Events
 
-| 事件 | 说明 | 回调参数 |
+| 事件名 | 说明 | 回调参数 |
 | --- | --- | --- |
 | confirm | 点击完成按钮时触发 | _{ selectedValues, selectedOptions, selectedIndexes }_ |
 | cancel | 点击取消按钮时触发 | _{ selectedValues, selectedOptions, selectedIndexes }_ |

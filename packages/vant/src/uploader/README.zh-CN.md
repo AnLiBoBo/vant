@@ -416,6 +416,7 @@ before-read、after-read、before-delete 执行时会传递以下回调参数：
 | --- | --- | --- | --- |
 | closeImagePreview | 关闭全屏的图片预览 | - | - |
 | chooseFile | 主动调起文件选择，由于浏览器安全限制，只有在用户触发操作的上下文中调用才有效 | - | - |
+| reuploadFile `4.9.3` | 主动调起文件选择，选择新文件后将覆盖原先上传的文件，由于浏览器安全限制，只有在用户触发操作的上下文中调用才有效 | _index: number_ | - |
 
 ### 类型定义
 
@@ -427,6 +428,8 @@ import type {
   UploaderInstance,
   UploaderResultType,
   UploaderFileListItem,
+  UploaderBeforeRead,
+  UploaderAfterRead,
 } from 'vant';
 ```
 
@@ -474,12 +477,13 @@ uploaderRef.value?.chooseFile();
 | --van-uploader-loading-icon-size | _22px_ | - |
 | --van-uploader-loading-icon-color | _var(--van-white)_ | - |
 | --van-uploader-disabled-opacity | _var(--van-disabled-opacity)_ | - |
+| --van-uploader-border-radius | _0px_ | - |
 
 ## 常见问题
 
 ### Uploader 在部分安卓机型上无法上传图片？
 
-Uploader 采用了 HTML 原生的 `<input type="file />` 标签进行上传，能否上传取决于当前系统和浏览器的兼容性。当遇到无法上传的问题时，一般有以下几种情况：
+Uploader 采用了 HTML 原生的 `<input type="file" />` 标签进行上传，能否上传取决于当前系统和浏览器的兼容性。当遇到无法上传的问题时，一般有以下几种情况：
 
 1. 遇到了安卓 App WebView 的兼容性问题，需要在安卓原生代码中进行兼容，可以参考此[文章](https://blog.csdn.net/qq_32756581/article/details/112861088)。
 2. 图片格式不正确，在当前系统/浏览器中无法识别，比如 `webp` 或 `heic` 格式。
@@ -534,3 +538,22 @@ export default {
 目前 Chrome、Safari 等浏览器不支持展示 HEIC/HEIF 格式的图片，因此上传后无法在 Uploader 组件中进行预览。
 
 [HEIF] 格式的兼容性请参考 [caniuse](https://caniuse.com/?search=heic)。
+
+### 如何判断用户授予了摄像头权限？
+
+在上传图片时，如果用户没有授予当前 App 摄像头权限，会导致 Uploader 组件无法使用。
+
+你可以通过浏览器提供的 [getUserMedia](https://developer.mozilla.org/zh-CN/docs/Web/API/MediaDevices/getUserMedia) 方法来判断是否被授予了摄像头权限（请留意 `getUserMedia` 方法无法在 iOS 10 中使用）。
+
+以下是一个简化的示例：
+
+```ts
+navigator.mediaDevices
+  .getUserMedia({ video: true })
+  .then((stream) => {
+    console.log(stream);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+```

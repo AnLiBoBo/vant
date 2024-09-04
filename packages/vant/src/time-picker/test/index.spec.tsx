@@ -11,13 +11,13 @@ function filter(type: string, options: PickerOption[]): PickerOption[] {
 function timeRangeFilter(
   type: string,
   options: PickerOption[],
-  values: string[]
+  values: string[],
 ): PickerOption[] {
   const hour = +values[0];
 
   if (type === 'hour') {
     return options.filter(
-      (option) => Number(option.value) >= 8 && Number(option.value) <= 18
+      (option) => Number(option.value) >= 8 && Number(option.value) <= 18,
     );
   }
 
@@ -35,7 +35,7 @@ function timeRangeFilter(
 }
 
 test('should format initial value correctly', () => {
-  const onUpdate = jest.fn();
+  const onUpdate = vi.fn();
   mount(TimePicker, {
     props: {
       minHour: 22,
@@ -49,7 +49,7 @@ test('should format initial value correctly', () => {
 
 describe('should update modelValue correctly', () => {
   test('basic', async () => {
-    const onUpdate = jest.fn();
+    const onUpdate = vi.fn();
     const wrapper = mount(TimePicker, {
       props: {
         modelValue: ['-10', '-10'],
@@ -66,7 +66,7 @@ describe('should update modelValue correctly', () => {
   });
 
   test('when using max-hour and max-minute prop', async () => {
-    const onUpdate = jest.fn();
+    const onUpdate = vi.fn();
     const wrapper = mount(TimePicker, {
       props: {
         modelValue: ['23', '59'],
@@ -84,7 +84,7 @@ describe('should update modelValue correctly', () => {
   });
 
   test('when using min-hour and min-minute prop', async () => {
-    const onUpdate = jest.fn();
+    const onUpdate = vi.fn();
     const wrapper = mount(TimePicker, {
       props: {
         modelValue: ['00', '00'],
@@ -122,18 +122,18 @@ test('should filter options when using filter prop to filter a time range', asyn
   });
 
   const picker = wrapper.findComponent(Picker);
-  let columns = picker.props('columns');
+  let columns = picker.props('columns')!;
   expect(columns[0].length).toEqual(11);
   expect(columns[1].length).toEqual(20);
   expect(columns[0][0].value).toEqual('08');
   expect(columns[1][0].value).toEqual('40');
 
   await wrapper.setProps({ modelValue: ['09', '00'] });
-  columns = picker.props('columns');
+  columns = picker.props('columns')!;
   expect(columns[1].length).toEqual(60);
 
   await wrapper.setProps({ modelValue: ['18', '00'] });
-  columns = picker.props('columns');
+  columns = picker.props('columns')!;
   expect(columns[1].length).toEqual(21);
   expect(columns[1][20].value).toEqual('20');
 });
@@ -216,7 +216,7 @@ test('should emit confirm event correctly after setting values', async () => {
 });
 
 test('should emit confirm event correctly after setting range', async () => {
-  const onUpdate = jest.fn();
+  const onUpdate = vi.fn();
   const wrapper = mount(TimePicker, {
     props: {
       minHour: 0,
